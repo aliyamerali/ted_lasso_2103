@@ -24,21 +24,33 @@ class League
     players_by_team
   end
 
-  def most_expensive_player
+  def all_players
     all_players = @teams.flat_map do |team|
       team.players
     end
-    
-    highest_paid_player = all_players.max_by do |player|
+  end
+
+  def most_expensive_player
+    highest_paid_player = self.all_players.max_by do |player|
       player.salary
     end
 
-    highest_paid_players = all_players.find_all do |player|
+    highest_paid_players = self.all_players.find_all do |player|
       player.salary == highest_paid_player.salary
     end
 
     highest_paid_players.map do |player|
       player.name
     end
+  end
+
+  def players_by_salary_range
+    groups = self.all_players.group_by do |player|
+      player.salary / 1_000_000
+    end
+
+    groups.map do |range, players|
+      ["Over #{range}M", players.map {|player| player.name}]
+    end.to_h
   end
 end

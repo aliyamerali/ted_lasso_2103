@@ -23,4 +23,22 @@ class League
     end
     players_by_team
   end
+
+  def most_expensive_player
+    all_players = @teams.flat_map do |team|
+      team.players
+    end
+    
+    highest_paid_player = all_players.max_by do |player|
+      player.salary
+    end
+
+    highest_paid_players = all_players.find_all do |player|
+      player.salary == highest_paid_player.salary
+    end
+
+    highest_paid_players.map do |player|
+      player.name
+    end
+  end
 end

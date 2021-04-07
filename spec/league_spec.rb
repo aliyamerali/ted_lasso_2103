@@ -71,4 +71,30 @@ describe League do
       expect(premier.players_by_team).to eq({richmond => [roy.name, sam.name], manchester => [jamie.name, fernandinho.name]})
     end
   end
+
+  describe '#most_expensive_player' do
+    premier = League.new("Premier League")
+
+    roy = Player.new({name: "Roy Kent", position: "Center Midfielder" , salary: 1_000_000})
+    sam = Player.new({name: "Sam Obisanya", position: "Right-back Defender", salary: 600_000})
+    richmond = Team.new("AFC Richmond", "Ted Lasso", [roy, sam])
+
+    jamie = Player.new({name: "Jamie Tartt", position: "Striker", salary: 1_500_000})
+    fernandinho = Player.new({name: "Fernandinho", position: "Midfielder", salary: 5_200_000})
+    manchester = Team.new("Manchester City FC", "Pep Guardiola", [jamie, fernandinho])
+    premier.add_team(richmond)
+    premier.add_team(manchester)
+
+    it 'returns an array containing the name of the player with the highest salary across all teams in league' do
+      expect(premier.most_expensive_player).to eq(["Fernandinho"])
+    end
+
+    it 'returns array with multiple names if highest salary is tied' do
+      aliya = Player.new({name: "Aliya Merali", position: "Striker", salary: 5_200_000})
+      denver = Team.new("Denver", "Michael Hancock", [aliya])
+      premier.add_team(denver)
+
+      expect(premier.most_expensive_player).to eq(["Fernandinho", "Aliya Merali"])
+    end
+  end
 end

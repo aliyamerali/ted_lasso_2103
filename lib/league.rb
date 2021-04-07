@@ -44,7 +44,7 @@ class League
     end
   end
 
-  def players_by_salary_range
+  def players_by_salary_range #TODO: Need to ID how to show empty array for groups with no members
     groups = self.all_players.group_by do |player|
       player.salary / 1_000_000
     end
